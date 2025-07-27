@@ -1,0 +1,59 @@
+# RLHF/DPO optimization configuration
+
+optimization:
+  # General configuration
+  enabled: true
+  auto_select_model: true
+  check_group_discussion_suitability: true
+  improve_system_prompt: true
+  improve_user_prompt: true
+
+  # RLHF (Reinforcement Learning from Human Feedback) configuration
+  feedback:
+    enabled: true
+    collection_probability: 0.3  # Probability of requesting feedback
+    collect_comparisons: true
+    min_samples_for_update: 5  # Minimum samples before updating
+    feedback_cache_size: 1000  # Maximum number of feedback entries to cache
+    feedback_collection_methods:
+      - cli_prompt  # Collect via CLI
+      - api         # Collect via API (future)
+    initial_feedback_boost: true  # Increase collection probability for new models
+
+  # DPO (Direct Preference Optimization) configuration
+  preference:
+    weight_update_factor: 0.1    # Weight update factor (0.0-1.0)
+    win_rate_weight: 0.7         # Weight of win rate
+    score_weight: 0.3            # Weight of rating score
+    default_weight: 1.0          # Default weight
+    min_weight: 0.5              # Minimum weight
+    max_weight: 2.0              # Maximum weight
+    periodic_update: true        # Automatically update periodically
+    update_interval: 10          # Update after every 10 new feedback entries
+    smooth_updates: true         # Smooth out sudden updates
+
+  # Query analysis
+  query_analysis:
+    use_cached_categories: true  # Use cached categories from the database
+    category_similarity_threshold: 0.85  # Similarity threshold to use cached categories
+    keyword_weighting: true      # Consider keyword position in the query
+    complex_query_threshold: 1.8  # Threshold to determine complex queries
+
+  # Prompt optimization
+  prompt_optimization:
+    template_selection_strategy: "best_match"  # best_match, random_top3, weighted
+    max_prompt_token_count: 2048    # Token limit for prompts
+    dynamic_instruction_tuning: true  # Adjust instructions based on feedback
+    instruction_history_window: 20    # Number of recent feedback entries to analyze
+
+  # System prompt optimization
+  system_prompt_optimization:
+    append_only: true  # Only append instructions, do not replace
+    max_additions: 3   # Maximum number of additional instructions
+    max_tokens: 512    # Maximum length of system prompt
+    instruction_categories:
+      - performance
+      - quality
+      - tone
+      - format
+      - domain_specific
