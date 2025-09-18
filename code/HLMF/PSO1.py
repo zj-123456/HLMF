@@ -4,7 +4,7 @@ import re
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-#会有负值，不用
+
 
 class PSO:
     def __init__(self, obj_func, bounds, num_particles=50, num_iterations=100):
